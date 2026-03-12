@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ResilienceShield — Middleware de résilience réseau
 
 Projet de fin d'études — Bénin Hub Technologie 2025
@@ -26,3 +27,6 @@ Dashboard : http://localhost:8080/admin/
 
 ## Encadrant
 Mr Aziz — Bénin Hub Technologie
+=======
+# ResilienceShield
+>>>>>>> f8f139cd131bdcdd13ebf8ba3e12ab0a2fd65aeb
