@@ -1,0 +1,4 @@
+resilienceshield
+data/
+logs/middleware.log
+*.db

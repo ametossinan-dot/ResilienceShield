@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResilienceShield — Dashboard Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-mark">BHT</div>
+    <div>
+      <div class="logo-name">Bénin Hub Technologie</div>
+      <div class="logo-sub">Middleware · Dashboard de supervision</div>
+    </div>
+  </div>
+
+  <div class="header-middle">
+    <div id="status-pill" class="pill offline">OFFLINE</div>
+  </div>
+
+  <div class="admin-block">
+    <div class="admin-avatar" id="admin-avatar">NA</div>
+    <div>
+      <div class="admin-name" id="admin-name">Norberto AMETOSSINA</div>
+      <div class="admin-role" id="admin-role">Administrateur Systeme</div>
+    </div>
+  </div>
+</header>
+
+  <div id="status-banner" class="banner banner-offline">
+    <span id="banner-text">MODE HORS-LIGNE — Transactions stockees dans SQLite local</span>
+    <span id="banner-time"></span>
+  </div>
+
+  <main>
+
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Dashboard de Supervision</h1>
+        <p class="page-sub">Surveillance en temps reel — ResilienceShield v1.0</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-ghost" onclick="loadAll()">Actualiser</button>
+        <button class="btn btn-toggle" id="btn-toggle" onclick="toggleMode()">
+          Passer en ONLINE
+        </button>
+        <button class="btn btn-primary" id="btn-sync" onclick="triggerSync()">
+          Synchroniser maintenant
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">STATUT RESEAU</div>
+        <div class="stat-value danger" id="stat-status">OFFLINE</div>
+        <div class="stat-sub" id="stat-sub">Serveur distant inaccessible</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">EN ATTENTE</div>
+        <div class="stat-value warning" id="stat-pending">0</div>
+        <div class="stat-sub">Transactions non synchronisees</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">SYNCHRONISEES</div>
+        <div class="stat-value success" id="stat-synced">0</div>
+        <div class="stat-sub">Transactions envoyees</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">DERNIERE SYNC</div>
+        <div class="stat-value-sm" id="stat-last-sync">Aucune</div>
+        <div class="stat-sub">Horodatage</div>
+      </div>
+    </div>
+
+    <!-- Graphique -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">TRANSACTIONS DANS LE TEMPS</div>
+          <div class="section-sub">
+            Evolution du nombre de transactions — en attente vs synchronisees
+          </div>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item">
+            <span class="legend-dot" style="background:#3b82f6"></span>
+            En attente
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot" style="background:#10b981"></span>
+            Synchronisees
+          </span>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="transactionChart"></canvas>
+      </div>
+    </div>
+
+    <!-- File FIFO -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">FILE D'ATTENTE FIFO</div>
+          <div class="section-sub">
+            Transactions en attente — ordre d'arrivee (premier entre, premier sorti)
+          </div>
+        </div>
+        <span class="badge badge-warning" id="fifo-count">0 en attente</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Methode</th>
+              <th>Endpoint</th>
+              <th>Donnees</th>
+              <th>Enregistre le</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="queue-body">
+            <tr><td colspan="6" class="empty">Chargement...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Logs -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">HISTORIQUE DES EVENEMENTS</div>
+          <div class="section-sub">
+            Logs systeme du middleware — mis a jour toutes les 5s
+          </div>
+        </div>
+        <div class="live-indicator">
+          <span class="live-dot"></span> En direct
+        </div>
+      </div>
+      <div id="logs-container">
+        <div class="empty">Chargement des logs...</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>ResilienceShield — AHOUDJI Francis &amp; AMETOSSINA Norberto</span>
+    <span>Benin Hub Technologie · Projet de fin d'etudes 2025</span>
+    <span id="footer-clock"></span>
+  </footer>
+
+  <div id="toast-stack"></div>
+  <script src="app.js"></script>
+</body>
+</html>
